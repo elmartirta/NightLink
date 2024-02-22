@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dr3at2bgnlp00"
+path="res://.godot/imported/Lupus Nocte - Sunset Dew.mp3-7c80815aea763cfd1df4ecd40283f7b8.mp3str"
+
+[deps]
+
+source_file="res://media/music/Lupus Nocte - Sunset Dew.mp3"
+dest_files=["res://.godot/imported/Lupus Nocte - Sunset Dew.mp3-7c80815aea763cfd1df4ecd40283f7b8.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

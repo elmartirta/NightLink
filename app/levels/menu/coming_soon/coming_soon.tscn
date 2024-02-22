@@ -1,0 +1,51 @@
+[gd_scene load_steps=4 format=3 uid="uid://ciilhvnnrv6rk"]
+
+[ext_resource type="AudioStream" uid="uid://dr3at2bgnlp00" path="res://media/music/Lupus Nocte - Sunset Dew.mp3" id="1_yeka7"]
+[ext_resource type="Texture2D" uid="uid://csobqk4amaexb" path="res://media/art/sunset over aurelia bay.png" id="2_mbj61"]
+[ext_resource type="FontFile" uid="uid://dp4x2e23e3svc" path="res://media/fonts/Palm Beach.ttf" id="3_6lqii"]
+
+[node name="ComingSoon" type="Node2D"]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("1_yeka7")
+volume_db = -10.895
+autoplay = true
+
+[node name="SunsetOverAureliaBay" type="Sprite2D" parent="."]
+position = Vector2(-50, -50)
+texture = ExtResource("2_mbj61")
+centered = false
+
+[node name="Label" type="Label" parent="."]
+offset_left = 186.0
+offset_top = 280.0
+offset_right = 955.0
+offset_bottom = 382.0
+theme_override_colors/font_color = Color(0.780392, 0.568627, 0.25098, 1)
+theme_override_fonts/font = ExtResource("3_6lqii")
+theme_override_font_sizes/font_size = 91
+text = "COMING SOON"
+
+[node name="Label" type="Label" parent="Label"]
+offset_left = -6.0
+offset_top = -6.0
+offset_right = 763.0
+offset_bottom = 96.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_6lqii")
+theme_override_font_sizes/font_size = 91
+text = "COMING SOON"
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+offset_left = 195.0
+offset_top = 379.0
+offset_right = 957.0
+offset_bottom = 393.0
+color = Color(0.780392, 0.568627, 0.25098, 1)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = 191.0
+offset_top = 376.0
+offset_right = 953.0
+offset_bottom = 390.0
+color = Color(0, 0, 0, 1)
