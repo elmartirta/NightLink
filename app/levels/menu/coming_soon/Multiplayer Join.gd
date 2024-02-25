@@ -6,10 +6,10 @@ extends GridContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var server_ip = "0.0.0.0"
+	var server_ip = "127.0.0.1"
 	var server_port = 42019
 	
-	if true or OS.has_feature("dedicated_server") or "--server" in OS.get_cmdline_user_args():
+	if OS.has_feature("dedicated_server") or "--server" in OS.get_cmdline_user_args():
 		# Create server and open the port to listen on.
 		var peer = ENetMultiplayerPeer.new()
 		peer.create_server(server_port, 10)
@@ -21,8 +21,8 @@ func _ready():
 		print("Create Client " + server_ip + ":" + str(server_port))
 		multiplayer.multiplayer_peer = peer
 	
-	if multiplayer.is_server():
-		player_cursors._on_player_connected(multiplayer.get_unique_id())
+	if not multiplayer.is_server():
+		player_cursors.add_cursor(multiplayer.get_unique_id())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

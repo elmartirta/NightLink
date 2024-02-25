@@ -19,17 +19,28 @@ func _input(event):
 
 func _on_player_connected(id):
 	print("Connect " + str(id))
-	cursors[id] = cursor_template.duplicate(0)
-	cursors[id].visible = true
-	add_child(cursors[id])
-
+	add_cursor.rpc(id)
+	
 func _on_player_disconnected(id):
 	print("Disconnect " + str(id))
+	remove_cursor.rpc(id)
+	
+@rpc("authority", "call_remote", "reliable")
+func add_cursor(id: int):
+	if not cursors.has(id):
+		cursors[id] = cursor_template.duplicate(0)
+		cursors[id].visible = true
+		add_child(cursors[id])
+
+@rpc("authority", "call_remote", "reliable")
+func remove_cursor(id: int):
 	cursors[id].queue_free()
 	cursors.erase(id)
 
-@rpc("any_peer", "call_local", "reliable")
+@rpc("any_peer", "call_remote", "reliable")
 func set_cursor_name(id: int, name: String):
+	if multiplayer.is_server():
+		set_cursor_name.rpc(id, name)
 	cursors[id].get_node("Cursor Sprite").get_node("Username").text = name
 
 var cursor_sprites = [
@@ -39,11 +50,15 @@ var cursor_sprites = [
 	preload("res://media/art/cursors/red_cursor.svg")
 ]
 
-@rpc("any_peer", "call_local", "reliable")
+@rpc("any_peer", "call_remote", "reliable")
 func set_color(id: int, color_index: int):
+	if multiplayer.is_server():
+		set_color.rpc(id, color_index)
 	cursors[id].get_node("Cursor Sprite").texture = cursor_sprites[color_index]
 
-@rpc("any_peer", "call_local", "unreliable_ordered")
+@rpc("any_peer", "call_remote", "unreliable_ordered")
 func move_cursor(id: int, x: int, y: int):
+	if multiplayer.is_server():
+		move_cursor.rpc(id, x, y)
 	cursors[id].position.x = x
 	cursors[id].position.y = y
