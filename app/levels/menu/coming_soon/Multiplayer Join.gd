@@ -18,18 +18,14 @@ func _ready():
 		# Connect to Server as Client
 		var peer = ENetMultiplayerPeer.new()
 		peer.create_client(server_ip, server_port)
-		print("Create Client " + server_ip + ":" + str(server_port))
 		multiplayer.multiplayer_peer = peer
-	
-	if not multiplayer.is_server():
-		player_cursors.add_cursor(multiplayer.get_unique_id())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 
 func _on_player_name_text_changed():
-	player_cursors.set_cursor_name.rpc(multiplayer.get_unique_id(), player_name.text)
+	player_cursors.set_cursor_name(player_name.text)
 
 func _on_color_item_selected(index):
-	player_cursors.set_color.rpc(multiplayer.get_unique_id(), color_picker.selected)
+	player_cursors.set_color(color_picker.selected)

@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddpkfhpqvnupj"]
+
+[ext_resource type="Texture2D" uid="uid://wd1vwnneu22a" path="res://media/art/cursors/black_cursor.svg" id="1_6vuwh"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_q1uym"]
+properties/0/path = NodePath("Cursor Sprite/Username:text")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Cursor Sprite:metadata/color")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[node name="Cursor Template" type="Node2D"]
+
+[node name="Cursor Sprite" type="Sprite2D" parent="."]
+z_index = 1000
+z_as_relative = false
+position = Vector2(-8, -5)
+texture = ExtResource("1_6vuwh")
+centered = false
+metadata/color = 0
+
+[node name="Username" type="Label" parent="Cursor Sprite"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -48.5
+offset_right = 50.5
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Player Name"
+horizontal_alignment = 1
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_q1uym")

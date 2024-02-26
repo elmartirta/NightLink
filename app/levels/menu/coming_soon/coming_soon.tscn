@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://ciilhvnnrv6rk"]
+[gd_scene load_steps=6 format=3 uid="uid://ciilhvnnrv6rk"]
 
 [ext_resource type="AudioStream" uid="uid://dr3at2bgnlp00" path="res://media/music/Lupus Nocte - Sunset Dew.mp3" id="1_yeka7"]
 [ext_resource type="Texture2D" uid="uid://csobqk4amaexb" path="res://media/art/sunset over aurelia bay.png" id="2_mbj61"]
 [ext_resource type="FontFile" uid="uid://dp4x2e23e3svc" path="res://media/fonts/Palm Beach.ttf" id="3_6lqii"]
 [ext_resource type="Script" path="res://app/levels/menu/coming_soon/PlayerCursors.gd" id="4_ydwah"]
 [ext_resource type="Script" path="res://app/levels/menu/coming_soon/Multiplayer Join.gd" id="5_u52c4"]
-[ext_resource type="Texture2D" uid="uid://wd1vwnneu22a" path="res://media/art/cursors/black_cursor.svg" id="5_usppn"]
 
 [node name="ComingSoon" type="Node2D"]
 
@@ -53,33 +52,16 @@ offset_right = 953.0
 offset_bottom = 390.0
 color = Color(0, 0, 0, 1)
 
-[node name="PlayerCursors" type="Node2D" parent="." node_paths=PackedStringArray("cursor_template")]
+[node name="PlayerCursors" type="Node2D" parent="." node_paths=PackedStringArray("spawn_path", "spawner")]
 script = ExtResource("4_ydwah")
-cursor_template = NodePath("Cursor Template")
+spawn_path = NodePath("SpawnedCursors")
+spawner = NodePath("MultiplayerSpawner")
 
-[node name="Cursor Template" type="Node2D" parent="PlayerCursors"]
-visible = false
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="PlayerCursors"]
+spawn_path = NodePath("../SpawnedCursors")
+spawn_limit = 100
 
-[node name="Cursor Sprite" type="Sprite2D" parent="PlayerCursors/Cursor Template"]
-z_index = 1000
-z_as_relative = false
-position = Vector2(-8, -5)
-texture = ExtResource("5_usppn")
-centered = false
-
-[node name="Username" type="Label" parent="PlayerCursors/Cursor Template/Cursor Sprite"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -48.5
-offset_right = 50.5
-offset_bottom = 23.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "Player Name"
-horizontal_alignment = 1
+[node name="SpawnedCursors" type="Node2D" parent="PlayerCursors"]
 
 [node name="Multiplayer Join" type="GridContainer" parent="." node_paths=PackedStringArray("player_cursors", "color_picker", "player_name")]
 offset_left = 20.0

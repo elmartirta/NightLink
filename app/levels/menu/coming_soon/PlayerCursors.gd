@@ -1,47 +1,21 @@
 extends Node2D
 
-@export var cursor_template: Node2D = null
-var cursors = {}
+@export var spawn_path: Node2D
+@export var spawner: MultiplayerSpawner
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	multiplayer.peer_connected.connect(_on_player_connected)
-	multiplayer.peer_disconnected.connect(_on_player_disconnected)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-func _input(event):
-	if event is InputEventMouseMotion:
-		var mouse_position = get_viewport().get_mouse_position()
-		move_cursor.rpc(multiplayer.get_unique_id(), mouse_position.x, mouse_position.y)
-
-func _on_player_connected(id):
-	print("Connect " + str(id))
-	add_cursor.rpc(id)
-	
-func _on_player_disconnected(id):
-	print("Disconnect " + str(id))
-	remove_cursor.rpc(id)
-	
-@rpc("authority", "call_remote", "reliable")
-func add_cursor(id: int):
-	if not cursors.has(id):
-		cursors[id] = cursor_template.duplicate(0)
-		cursors[id].visible = true
-		add_child(cursors[id])
-
-@rpc("authority", "call_remote", "reliable")
-func remove_cursor(id: int):
-	cursors[id].queue_free()
-	cursors.erase(id)
-
-@rpc("any_peer", "call_remote", "reliable")
-func set_cursor_name(id: int, name: String):
 	if multiplayer.is_server():
-		set_cursor_name.rpc(id, name)
-	cursors[id].get_node("Cursor Sprite").get_node("Username").text = name
+		spawner.spawn_function = add_cursor
+		
+		multiplayer.peer_connected.connect(_on_player_connected)
+		multiplayer.peer_disconnected.connect(_on_player_disconnected)
+		
+		for id in multiplayer.get_peers():
+			_on_player_connected(id)
+			
+		if not OS.has_feature("dedicated_server"):
+			_on_player_connected(1)
 
 var cursor_sprites = [
 	preload("res://media/art/cursors/black_cursor.svg"),
@@ -50,15 +24,39 @@ var cursor_sprites = [
 	preload("res://media/art/cursors/red_cursor.svg")
 ]
 
-@rpc("any_peer", "call_remote", "reliable")
-func set_color(id: int, color_index: int):
-	if multiplayer.is_server():
-		set_color.rpc(id, color_index)
-	cursors[id].get_node("Cursor Sprite").texture = cursor_sprites[color_index]
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	for child in spawn_path.get_children():
+		if not child is MultiplayerSpawner:
+			var sprite = child.get_node("Cursor Sprite")
+			sprite.texture = cursor_sprites[sprite.get_meta("color")]
 
-@rpc("any_peer", "call_remote", "unreliable_ordered")
-func move_cursor(id: int, x: int, y: int):
-	if multiplayer.is_server():
-		move_cursor.rpc(id, x, y)
-	cursors[id].position.x = x
-	cursors[id].position.y = y
+func _input(event):
+	if event is InputEventMouseMotion:
+		var mouse_position = get_viewport().get_mouse_position()
+		move_cursor(mouse_position.x, mouse_position.y)
+
+func add_cursor(id):
+	var cursor = preload("res://templates/cursor_template.tscn").instantiate()
+	cursor.set_name(str(id))
+	cursor.get_node("MultiplayerSynchronizer").set_multiplayer_authority(id)
+	return cursor
+
+func _on_player_connected(id):
+	spawner.spawn(id)
+
+func _on_player_disconnected(id):
+	spawn_path.get_node(str(id)).queue_free()
+
+func set_cursor_name(name: String):
+	var id = multiplayer.get_unique_id()
+	spawn_path.get_node(str(id)).get_node("Cursor Sprite").get_node("Username").text = name
+
+func set_color(color_index: int):
+	var id = multiplayer.get_unique_id()
+	spawn_path.get_node(str(id)).get_node("Cursor Sprite").set_meta("color", color_index)
+
+func move_cursor(x: int, y: int):
+	var id = multiplayer.get_unique_id()
+	spawn_path.get_node(str(id)).position.x = x
+	spawn_path.get_node(str(id)).position.y = y
