@@ -2,8 +2,11 @@ extends Node2D
 
 # Called before _ready, so that child nodes can know if we're a server or not.
 func _enter_tree():
-	var server_ip = "127.0.0.1"
+	var server_ip = "0.0.0.0"
 	var server_port = 42019
+	
+	if OS.has_feature("web"):
+		server_ip = JavaScriptBridge.eval("window.location.hostname")
 	
 	if OS.has_feature("dedicated_server") or "--server" in OS.get_cmdline_user_args():
 		# Create server and open the port to listen on.
