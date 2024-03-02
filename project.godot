@@ -10,7 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Godot V 1"
+config/name="NightLink - Godot"
+config/version="Pre-Alpha"
 run/main_scene="res://app/levels/menu/coming_soon/coming_soon.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
