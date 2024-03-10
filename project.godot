@@ -14,11 +14,21 @@ config/name="NightLink - Godot"
 config/version="Pre-Alpha"
 run/main_scene="res://app/levels/menu/coming_soon/coming_soon.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
+run/max_fps=60
 config/icon="res://icon.svg"
+
+[audio]
+
+driver/mix_rate.web=44100
 
 [debug]
 
 file_logging/enable_file_logging=true
+
+[display]
+
+window/energy_saving/keep_screen_on=false
+window/stretch/mode="canvas_items"
 
 [rendering]
 

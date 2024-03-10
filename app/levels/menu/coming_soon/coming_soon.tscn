@@ -1,17 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://ciilhvnnrv6rk"]
+[gd_scene load_steps=5 format=3 uid="uid://ciilhvnnrv6rk"]
 
 [ext_resource type="Script" path="res://app/levels/menu/coming_soon/Multiplayer.gd" id="1_b328b"]
-[ext_resource type="AudioStream" uid="uid://dr3at2bgnlp00" path="res://media/music/Lupus Nocte - Sunset Dew.mp3" id="1_yeka7"]
 [ext_resource type="Texture2D" uid="uid://csobqk4amaexb" path="res://media/art/sunset over aurelia bay.png" id="2_mbj61"]
 [ext_resource type="FontFile" uid="uid://dp4x2e23e3svc" path="res://media/fonts/Palm Beach.ttf" id="3_6lqii"]
 [ext_resource type="Script" path="res://app/levels/menu/coming_soon/PlayerCursors.gd" id="4_ydwah"]
 
 [node name="ComingSoon" type="Node2D"]
 script = ExtResource("1_b328b")
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("1_yeka7")
-volume_db = -10.895
 
 [node name="SunsetOverAureliaBay" type="Sprite2D" parent="."]
 position = Vector2(-46, -39)

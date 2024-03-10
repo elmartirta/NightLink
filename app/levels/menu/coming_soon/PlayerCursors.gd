@@ -34,6 +34,8 @@ func _process(delta):
 		if not child is MultiplayerSpawner:
 			var sprite = child.get_node("Cursor Sprite")
 			sprite.texture = cursor_sprites[sprite.get_meta("color")]
+	var mouse_position = get_viewport().get_mouse_position()
+	move_cursor(mouse_position.x, mouse_position.y)
 
 func add_cursor(id):
 	var cursor = preload("res://templates/cursor_template.tscn").instantiate()
@@ -65,10 +67,13 @@ func _on_color_item_selected(index):
 
 func move_cursor(x: int, y: int):
 	if our_cursor:
-		our_cursor.position.x = x
-		our_cursor.position.y = y
+		if our_cursor.position.x != x or our_cursor.position.y != y:
+			move_cursor_rpc.rpc(x, y)
 
-func _input(event):
-	if event is InputEventMouseMotion:
-		var mouse_position = get_viewport().get_mouse_position()
-		move_cursor(mouse_position.x, mouse_position.y)
+@rpc("any_peer", "call_local", "unreliable_ordered")
+func move_cursor_rpc(x: int, y: int):
+	var id = multiplayer.get_remote_sender_id()
+	var this_cursor = $SpawnedCursors.get_node(str(id))
+	if this_cursor:
+		this_cursor.position.x = x
+		this_cursor.position.y = y
